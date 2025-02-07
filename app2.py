@@ -25,7 +25,16 @@ def load_pdf_text(pdf_path):
     doc = fitz.open(pdf_path)
     return [page.get_text("text") for page in doc]
 
-pdf_document = "/Users/trevoralpert/Desktop/Langchain projects/Working Apps/CEP_1_Crafting_an_AI_Powered_HR_Assistant/Dataset/the_nestle_hr_policy_pdf_2012.pdf"
+# Get the absolute path to the project directory
+project_dir = os.path.dirname(os.path.abspath(__file__))
+
+# Build the full path to the PDF inside the 'Dataset' folder
+pdf_document = os.path.join(project_dir, "Dataset", "the_nestle_hr_policy_pdf_2012.pdf")
+
+# Ensure the file exists
+if not os.path.exists(pdf_document):
+    raise FileNotFoundError(f"Error: The PDF file was not found at {pdf_document}")
+
 pages = load_pdf_text(pdf_document)
 
 documents = [Document(page_content=page_text) for page_text in pages]
